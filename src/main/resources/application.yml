@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: spring-auth
+  datasource:
+    url: jdbc:mysql://localhost:3306/springAuth
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+      max-request-size: 200MB
+
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+            client-authentication-method: post
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://localhost:8080/api/auth/social/kakao"
+            scope: profile_nickname, profile_image
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+app:
+  email:
+    verification:
+      subject: 이메일 인증
+      text: 귀하의 인증 코드는 %s 입니다.
+      expiry: 3
+
+jwt:
+  secret:
+    key: ${JWT_SECRET_KEY}
+  token:
+    expiration: 1800000
+  refresh:
+    token:
+      expiration: 1209600000
+
+logging:
+  level:
+    com:
+      sparta:
+        springauth: DEBUG
